@@ -6,8 +6,10 @@ let isPlaying;
 let winCount = 0;
 let lossCount = 0;
 
-function randomizer(item = 0, start = 1, end = 12) {
-    item = Math.ceil(Math.random() * end) + start;
+function randomizer(start = 1, end = 12) {
+    start = Math.floor(start);
+    end = Math.floor(end);
+    item = Math.floor(Math.random() * (end - start) + start);
     return item;
 }
 
@@ -37,14 +39,21 @@ function clickGem(matchScore, currentScore, gem) {
 }
 
 function init() {
+    $('.intro').text("Digital Diamonds.");
+    gems = [0,0,0,0];
+    gem1 = 0;
+    gem2 = 0;
+    gem3 = 0;
+    gem4 = 0;
     isPlaying = true;
     currentScore = 0;
-    matchScore = randomizer(matchScore, 19,120);
+    matchScore = 0;
+    matchScore = randomizer(19,120);
+    console.log(gems, gem1,gem2,gem3,gem4, currentScore, matchScore);
     $('.current').text("0");
 
     for (let i = 0; i < gems.length; i++) {
         let gem;
-        let isDuplicate = false;
         gem = randomizer();
         while(gem === gems[0] ||
               gem === gems[1] ||
@@ -53,37 +62,51 @@ function init() {
                     gem = randomizer();
               }  
         gems[i] = gem;
+        console.log(gems, gem1,gem2,gem3,gem4, currentScore, matchScore);
     }
 
     gem1 = gems[0];
     gem2 = gems[1];
     gem3 = gems[2];
     gem4 = gems[3];
-
-    console.log(gem1,gem2,gem3,gem4);
+    console.log(gems, gem1,gem2,gem3,gem4, currentScore, matchScore);
     $('.match').text(matchScore);
-    $('#gem-1').click(function() {
-        currentScore = clickGem(matchScore, currentScore, gem1);
 
-    });
-    $('#gem-2').click(function() {
-        currentScore = clickGem(matchScore, currentScore, gem2);
-    });
-    $('#gem-3').click(function() {
-        currentScore = clickGem(matchScore, currentScore, gem3);
-    });
-    $('#gem-4').click(function() {
-        currentScore = clickGem(matchScore, currentScore, gem4);
-    });
+}
 
-
-
+function resetScore(lossCount, winCount) {
+    lossCount = 0;
+    winCount = 0;
+    $('.wins').text(winCount);
+    $('.losses').text(lossCount)
 }
 
 
 
 
+$('#tryAgain').click(function () { 
+    init();
+    $('#tryAgain').addClass('disabled');
+ });
+ 
+ $('#resetScore').click(function () {
+     resetScore();
+ });
+
+ $('#gem-1').click(function() {
+     currentScore = clickGem(matchScore, currentScore, gem1);
+
+ });
+ $('#gem-2').click(function() {
+     currentScore = clickGem(matchScore, currentScore, gem2);
+ });
+ $('#gem-3').click(function() {
+     currentScore = clickGem(matchScore, currentScore, gem3);
+ });
+ $('#gem-4').click(function() {
+     currentScore = clickGem(matchScore, currentScore, gem4);
+ });
+
+
 
 init();
-
-
